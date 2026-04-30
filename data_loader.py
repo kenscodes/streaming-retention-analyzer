@@ -73,7 +73,7 @@ def load_and_clean() -> pd.DataFrame:
 def validate_schema(df: pd.DataFrame) -> None:
     """Print data quality report."""
     print("="*50)
-    print("📊 DATA QUALITY REPORT")
+ print(" DATA QUALITY REPORT")
     print("="*50)
     print(f"Total Records: {len(df):,}")
     print(f"Unique Users: {df['user_id'].nunique():,}")

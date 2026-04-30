@@ -8,8 +8,7 @@ def code(source):
 
 cells = []
 
-# ===== HEAD =====
-cells.append(md("# 🍿 Streaming Content Retention Analyzer\\n\\n**An analytics tool for identifying which content is retaining viewers and which is quietly losing them.**"))
+cells.append(md("# Streaming Content Retention Analyzer\\n\\n**An analytics tool for identifying which content is retaining viewers and which is quietly losing them.**"))
 
 cells.append(code("""import warnings
 warnings.filterwarnings('ignore')
@@ -32,9 +31,8 @@ from segmentation import segment_viewers, content_risk_matrix
 from export import (export_genre_performance, export_content_efficiency, 
                    export_viewer_segments, export_dropoff_curve, export_peak_viewing)
 
-print("✅ Modules loaded.")"""))
+print(" Modules loaded.")"""))
 
-# ===== SECTION 1 =====
 cells.append(md("---## Section 1 — Data Loading & Quality Report"))
 cells.append(code("""# Load data
 df = load_and_clean()
@@ -46,9 +44,8 @@ fig2 = px.pie(df, names='device', title='Device Usage', hole=0.4, color_discrete
 
 fig1.show()
 fig2.show()
-print("💡 Insight: Data loaded and validated successfully. Distributions look normal.")"""))
+print(" Insight: Data loaded and validated successfully. Distributions look normal.")"""))
 
-# ===== SECTION 2 =====
 cells.append(md("---## Section 2 — Completion Rate by Genre"))
 cells.append(code("""genre_perf = completion_rate_by_genre(df)
 overall_avg = df['completion_rate'].mean()
@@ -61,18 +58,17 @@ fig.show()
 
 top3 = genre_perf['genre'].head(3).tolist()
 bot3 = genre_perf['genre'].tail(3).tolist()
-print(f"💡 Insight: Top 3 genres by completion rate: {', '.join(top3)}. Bottom 3: {', '.join(bot3)}.")"""))
+print(f" Insight: Top 3 genres by completion rate: {', '.join(top3)}. Bottom 3: {', '.join(bot3)}.")"""))
 
-# ===== SECTION 3 =====
 cells.append(md("---## Section 3 — Content Efficiency Score\\n\\n*Content Efficiency Score measures how much engaged viewing a piece of content generates relative to its length. A short documentary with high completion rates can outscore a blockbuster movie with lots of drop-offs.*"))
 cells.append(code("""efficiency = content_efficiency_score(df)
 
 # Output top 20
-print("🏆 TOP 20 CONTENT BY EFFICIENCY")
+print(" TOP 20 CONTENT BY EFFICIENCY")
 display(efficiency.head(20))
 
 # Output bottom 20
-print("\\n⚠️ BOTTOM 20 CONTENT BY EFFICIENCY")
+print("\\n️ BOTTOM 20 CONTENT BY EFFICIENCY")
 display(efficiency.tail(20))"""))
 cells.append(code("""# Average efficiency by genre
 avg_eff_genre = efficiency.groupby('genre')['efficiency_score'].mean().reset_index().sort_values('efficiency_score')
@@ -83,9 +79,8 @@ fig.show()
 fig2 = px.scatter(efficiency, x='total_views', y='avg_completion_rate', size='content_length_mins', 
                   color='tier', hover_name='title', title='Reach vs Completion by Tier')
 fig2.show()
-print("💡 Insight: Elite tier content strongly indexes high completion rates regardless of total view count.")"""))
+print(" Insight: Elite tier content strongly indexes high completion rates regardless of total view count.")"""))
 
-# ===== SECTION 4 =====
 cells.append(md("---## Section 4 — Viewer Segmentation"))
 cells.append(code("""segments = segment_viewers(df)
 seg_counts = segments['segment'].value_counts().reset_index()
@@ -98,9 +93,8 @@ fig2 = px.bar(fav_genres, x='segment', y='count', color='favourite_genre', title
 fig2.show()
 
 dropoff_pct = (len(segments[segments['segment'] == 'Drop-off Risk']) / len(segments)) * 100
-print(f"💡 Insight: {dropoff_pct:.1f}% of viewers are Drop-off Risk.")"""))
+print(f" Insight: {dropoff_pct:.1f}% of viewers are Drop-off Risk.")"""))
 
-# ===== SECTION 5 =====
 cells.append(md("---## Section 5 — Drop-off Curve (Series)"))
 cells.append(code("""dropoffs = dropoff_curve(df)
 
@@ -115,9 +109,8 @@ steepest_val = dropoffs.loc[steepest_drop_idx, 'pct_still_watching']
 fig.add_vline(x=steepest_ep, line_dash="dot", line_color="black", annotation_text="The Cliff")
 fig.show()
 
-print(f"💡 Insight: The steepest drop-off occurs at episode {steepest_ep}, where viewers stop watching. Content teams should prioritise the hook in early episodes.")"""))
+print(f" Insight: The steepest drop-off occurs at episode {steepest_ep}, where viewers stop watching. Content teams should prioritise the hook in early episodes.")"""))
 
-# ===== SECTION 6 =====
 cells.append(md("---## Section 6 — Content Risk Matrix"))
 cells.append(code("""matrix = content_risk_matrix(efficiency)
 
@@ -133,9 +126,8 @@ fig.add_vline(x=matrix['total_views'].median(), line_dash='dash', line_color='gr
 fig.show()
 
 display(matrix['quadrant'].value_counts().reset_index())
-print("💡 Insight: Dead Weight content needs to be reviewed for catalogue removal.")"""))
+print(" Insight: Dead Weight content needs to be reviewed for catalogue removal.")"""))
 
-# ===== SECTION 7 =====
 cells.append(md("---## Section 7 — Genre Retention Funnel"))
 cells.append(code("""retention = genre_retention_funnel(df)
 
@@ -144,9 +136,8 @@ fig = px.bar(retention, x='genre', y='retention_rate_pct', title='Genre Retentio
 fig.show()
 
 best_loyalty = retention.iloc[0]['genre']
-print(f"💡 Insight: {best_loyalty} has the best loyalty, with users consistently returning for more.")"""))
+print(f" Insight: {best_loyalty} has the best loyalty, with users consistently returning for more.")"""))
 
-# ===== SECTION 8 =====
 cells.append(md("---## Section 8 — Strategic Recommendations"))
 cells.append(code("""dead_weight_pct = (len(matrix[matrix['quadrant'] == 'Dead Weight']) / len(matrix)) * 100
 top_genre = top3[0]
@@ -174,7 +165,6 @@ Most viewers abandoning series content do so around episode {steepest_ep}.
 from IPython.display import Markdown
 display(Markdown(memo))"""))
 
-# ===== CSV EXPORTS =====
 cells.append(md("---## CSV Exports"))
 cells.append(code("""p1 = export_genre_performance(genre_perf, efficiency, retention)
 p2 = export_content_efficiency(matrix)
@@ -183,11 +173,10 @@ p4 = export_dropoff_curve(dropoffs)
 hourly, daily = peak_viewing_analysis(df)
 p5 = export_peak_viewing(hourly, daily)
 
-print("✅ Exports completed to data/processed/")"""))
+print(" Exports completed to data/processed/")"""))
 
-# ===== POWER BI INSTRUCTIONS =====
 cells.append(md("""---
-## 📊 Power BI Dashboard Instructions
+## Power BI Dashboard Instructions
 
 **Page 1 — Content Performance Overview**
 - Import `genre_performance.csv` and `content_efficiency.csv`

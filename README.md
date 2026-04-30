@@ -36,6 +36,12 @@ Built to simulate the kind of content performance intelligence a product analyti
 
 ---
 
+## Live Dashboard
+
+[View the interactive Tableau Dashboard here](https://public.tableau.com/views/StreamingContentRetentionAnalyser/StreamingContentRetentionAnalyser?:language=en-US&publish=yes&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link)
+
+---
+
 ## Screenshots
 
 ![Streaming Content Analyser Dashboard](assets/streaming_content_analyser.png)
