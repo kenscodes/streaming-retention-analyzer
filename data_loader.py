@@ -24,7 +24,7 @@ def generate_synthetic_dataset(n: int = 50000) -> pd.DataFrame:
                                      1, np.random.randint(1, 25, n)),
         'watch_duration_mins': np.random.exponential(45, n).clip(1, 300).astype(int),
         'content_length_mins': np.random.choice([90, 120, 45, 60, 30, 150], n),
-        'session_date':     pd.date_range('2024-01-01', periods=n, freq='1min').to_series().sample(n).values,
+        'session_date':     pd.to_datetime('2024-01-01') + pd.to_timedelta(np.random.randint(0, 90, n), unit='D') + pd.to_timedelta(np.random.normal(19, 4, n).astype(int) % 24, unit='h') + pd.to_timedelta(np.random.randint(0, 60, n), unit='m'),
         'device':           np.random.choice(['Mobile', 'TV', 'Tablet', 'Desktop'], n, p=[0.45, 0.30, 0.15, 0.10]),
         'country':          np.random.choice(['IN', 'US', 'UK', 'BR', 'DE'], n, p=[0.40, 0.25, 0.15, 0.12, 0.08]),
         'user_subscription': np.random.choice(['Basic', 'Standard', 'Premium'], n, p=[0.35, 0.40, 0.25]),

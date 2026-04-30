@@ -42,7 +42,7 @@ def export_viewer_segments(segments_df: pd.DataFrame) -> str:
     path = PROCESSED_DIR / 'viewer_segments.csv'
     
     cols = ['user_id', 'segment', 'avg_completion_rate', 'avg_episodes_per_session', 
-            'total_sessions', 'favourite_genre', 'user_subscription']
+            'total_sessions', 'favourite_genre', 'subscription_tier']
     
     # rename user_subscription to subscription_tier to match prompt
     df = segments_df.rename(columns={'user_subscription': 'subscription_tier'}).copy()
@@ -58,16 +58,12 @@ def export_dropoff_curve(dropoff_df: pd.DataFrame) -> str:
     return str(path)
 
 def export_peak_viewing(hourly_df: pd.DataFrame, daily_df: pd.DataFrame) -> str:
-    """Export peak_viewing.csv containing both datasets."""
+    """Export peak hourly and daily viewing into two separate valid CSVs for BI tools."""
     _ensure_processed_dir()
-    path = PROCESSED_DIR / 'peak_viewing.csv'
+    path_h = PROCESSED_DIR / 'peak_hourly_viewing.csv'
+    path_d = PROCESSED_DIR / 'peak_daily_viewing.csv'
     
-    # The prompt asked for both in one CSV, which is unusual for BI tools.
-    # Usually it's better to have two CSVs, but to strictly follow the prompt:
-    with open(path, 'w') as f:
-        f.write("--- Hourly Volume ---\n")
-        hourly_df.to_csv(f, index=False)
-        f.write("\n--- Daily Volume ---\n")
-        daily_df.to_csv(f, index=False)
+    hourly_df.to_csv(path_h, index=False)
+    daily_df.to_csv(path_d, index=False)
     
-    return str(path)
+    return "peak_hourly_viewing.csv and peak_daily_viewing.csv"
